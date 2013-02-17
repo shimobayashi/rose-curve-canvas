@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <style type="text/css">
+      body {
+        background-color: #ccc;
+      };
+    </style>
+    <script type="text/javascript">
+      function draw(canvas, n, d) {
+        var ctx = canvas.getContext('2d');
+        if (!ctx)
+          throw 'failed to get 2d context';
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 0.5;
+        ctx.strokeStyle = 'rgba(234, 85, 6, 1.0)';
+        ctx.beginPath();
+
+        for (var t = 0.0; t < d * (2 * Math.PI); t += 0.01) {
+          var r = Math.sin(t * n / d);
+          var x = r * Math.cos(t);
+          var y = r * Math.sin(t);
+          var xx = x * 0.5 * canvas.width + canvas.width / 2;
+          var yy = y * 0.5 * canvas.height + canvas.height / 2;
+          if (t == 0.0) {
+            ctx.moveTo(xx, yy);
+          } else {
+            ctx.lineTo(xx, yy);
+          }
+        }
+
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      function update() {
+        var canvas = document.getElementById('rose-curve-canvas');
+        var n = $('#n').val();
+        var d = $('#d').val();
+        draw(canvas, n, d);
+      }
+
+      $(function() {
+        update();
+        $('#n').on('change', function() {
+          update();
+        });
+        $('#d').on('change', function() {
+          update();
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>rose-curve-canvas</h1>
+    <canvas id="rose-curve-canvas" width="512" height="512"></canvas>
+    <form>
+      <label>n<input id="n" type="number" value="1.0" /></label>
+      <label>d<input id="d" type="number" value="1.0" /></label>
+    </form>
+  </body>
+</html>
