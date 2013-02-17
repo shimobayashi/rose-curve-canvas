@@ -1,0 +1,45 @@
+<script type="text/javascript">
+  function draw(canvas, n, d) {
+    var ctx = canvas.getContext('2d');
+    if (!ctx)
+      throw 'failed to get 2d context';
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.lineWidth = 0.5;
+    ctx.strokeStyle = 'rgba(234, 85, 6, 1.0)';
+    ctx.beginPath();
+
+    for (
+      var t = 0.0, tt = 8 * (2 * Math.PI), r = 0.0;
+      (t < tt) || (Math.abs(r) > 0.01);
+      t += 0.01, r = Math.sin(t * (n / d))
+    ) {
+      var x = r * Math.cos(t);
+      var y = r * Math.sin(t);
+      var xx = x * 0.5 * canvas.width + canvas.width / 2;
+      var yy = y * 0.5 * canvas.height + canvas.height / 2;
+      if (t == 0.0) {
+        ctx.moveTo(xx, yy);
+      } else {
+        ctx.lineTo(xx, yy);
+      }
+    }
+
+    ctx.closePath();
+    ctx.stroke();
+  }
+
+  function update() {
+    var canvas = document.getElementById('rose-curve-canvas');
+    var n = 1.0 + 8.0 * Math.random();
+    var d = 1.0 + 8.0 * Math.random();
+    n = Math.round(n);
+    d = Math.round(d);
+    draw(canvas, n, d);
+  }
+
+  $(function() {
+    update();
+  });
+</script>
+<canvas id="rose-curve-canvas" width="180" height="180"></canvas>
